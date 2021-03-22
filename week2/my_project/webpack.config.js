@@ -1,18 +1,58 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { HotModuleReplacementPlugin } = require("webpack");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
-  entry: {
-          app: './src/index.js',
-          print: './src/print.js'
-  },
-  plugins: [
-      new HtmlWebpackPlugin({
-        title: 'Output Management'
-      })
+    entry: path.resolve(__dirname, "src/index.jsx"),
+    output: {
+        path: path.resolve(__dirname, "dist"),
+        filename: "bundle.[contenthash].js",
+        publicPath: "/",
+    },
+    mode: "development",
+    module: {
+        rules: [
+            {
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                },
+                resolve: {
+                    extensions: [".js", ".jsx"],
+                },
+            },
+            {
+                test: /\.css$/i,
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                    },
+                    "css-loader",
+                ],
+            },
+            {
+                test: /\.(png|jpg|svg)$/i,
+                loader: "file-loader",
+            },
+        ],
+    },
+    plugins: [
+        new CleanWebpackPlugin(),
+        new HotModuleReplacementPlugin(),
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, "public/index.html"),
+        }),
+        new MiniCssExtractPlugin({
+            filename: "styles.[contentHash].css",
+        }),
     ],
-  output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist')
-  }
+    devServer: {
+        historyApiFallback: true,
+        contentBase: path.resolve(__dirname, "dist"),
+        hot: true,
+        port: 8000,
+    },
 };
