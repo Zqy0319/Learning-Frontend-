@@ -1,37 +1,66 @@
 import React from "react";
 import "./Styles.css";
 
-class Clock extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {date: new Date()};
-    }
-    
-    componentDidMount() {
-        this.timerID = setInterval(
-          () => this.tick(),
-          1000
-        );
-      }
-    
-      componentWillUnmount() {
-        clearInterval(this.timerID);
-      }
-    
-      tick() {
-        this.setState({
-          date: new Date()
-        });
-      }
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch
+} from "react-router-dom";
 
-    render() {
-      return (
-        <div>
-          <h1>Hello, world!</h1>
-          <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
-        </div>
-      );
-    }
-  }
+export default function CustomLinkExample() {
+  return (
+    <Router>
+      <div>
+        <OldSchoolMenuLink
+          activeOnlyWhenExact={true}
+          to="/"
+          label="Home"
+        />
+        <OldSchoolMenuLink to="/about" label="About" />
 
-export default Clock;
+        <hr />
+
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/about">
+            <About />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+  );
+}
+
+function OldSchoolMenuLink({ label, to, activeOnlyWhenExact }) {
+  let match = useRouteMatch({
+    path: to,
+    exact: activeOnlyWhenExact
+  });
+
+  return (
+    <div className={match ? "active" : ""}>
+      {match && "> "}
+      <Link to={to}>{label}</Link>
+    </div>
+  );
+}
+
+function Home() {
+  return (
+    <div>
+      <h1>Page a</h1>
+    </div>
+  );
+}
+
+function About() {
+  return (
+    <div>
+      <h2>Page b</h2>
+    </div>
+  );
+}
