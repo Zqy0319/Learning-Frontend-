@@ -6,28 +6,30 @@ import {
   Switch,
   Route,
   Link,
-  useRouteMatch
 } from "react-router-dom";
+
 
 export default function CustomLinkExample() {
   return (
     <Router>
       <div>
-        <OldSchoolMenuLink
-          activeOnlyWhenExact={true}
-          to="/"
-          label="Home"
-        />
-        <OldSchoolMenuLink to="/about" label="About" />
 
+        <ul>
+          <li>
+            <Link to="/pageA">page A</Link>
+          </li>
+          <li>
+            <Link to="/pageB">page B</Link>
+          </li>
+        </ul>
         <hr />
 
         <Switch>
-          <Route exact path="/">
-            <Home />
+          <Route exact path="/pageA">
+            <PageA />
           </Route>
-          <Route path="/about">
-            <About />
+          <Route path="/pageB">
+            <PageB />
           </Route>
         </Switch>
       </div>
@@ -35,21 +37,7 @@ export default function CustomLinkExample() {
   );
 }
 
-function OldSchoolMenuLink({ label, to, activeOnlyWhenExact }) {
-  let match = useRouteMatch({
-    path: to,
-    exact: activeOnlyWhenExact
-  });
-
-  return (
-    <div className={match ? "active" : ""}>
-      {match && "> "}
-      <Link to={to}>{label}</Link>
-    </div>
-  );
-}
-
-function Home() {
+function PageA() {
   return (
     <div>
       <h1>Page a</h1>
@@ -57,7 +45,7 @@ function Home() {
   );
 }
 
-function About() {
+function PageB() {
   return (
     <div>
       <h2>Page b</h2>
