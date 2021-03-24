@@ -1,5 +1,10 @@
 import React from "react";
 import "./Styles.css";
+import 'antd/dist/antd.css';
+import { Input, Space } from "antd";
+const { Search } = Input;
+
+const onSearch = (value) => console.log(value);
 
 import {
   BrowserRouter as Router,
@@ -8,12 +13,10 @@ import {
   Link,
 } from "react-router-dom";
 
-
 export default function CustomLinkExample() {
   return (
     <Router>
       <div>
-
         <ul>
           <li>
             <Link to="/pageA">page A</Link>
@@ -37,18 +40,31 @@ export default function CustomLinkExample() {
   );
 }
 
-function PageA() {
-  return (
-    <div>
-      <h1>Page a</h1>
-    </div>
-  );
-}
+const PageA = () => (
+  <div style={{ position: "relative", left: 30 }}>
+    <h1>This is page A</h1>
+    <Space direction="vertical">
+      <Search
+        placeholder="input search text"
+        onSearch={onSearch}
+        style={{ width: 200}}
+      />
+      <Search
+        placeholder="input search text"
+        allowClear
+        onSearch={onSearch}
+        enterButton
+        style={{ width: 200 }}
+      />
+      <Search placeholder="input search text" onSearch={onSearch} enterButton />
+    </Space>
+  </div>
+);  
 
 function PageB() {
   return (
     <div>
-      <h2>Page b</h2>
+      <h2>This is Page b</h2>
     </div>
   );
 }
