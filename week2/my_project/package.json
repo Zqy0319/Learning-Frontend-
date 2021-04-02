@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "def": "def.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack serve --open chrome",
@@ -14,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "antd": "^4.14.1",
+    "commander": "^7.2.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router": "^5.2.0",
