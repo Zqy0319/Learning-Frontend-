@@ -6,7 +6,14 @@ program
   .command('build')
   .description('build web site for deployment')
   .action(() => {
-    console.log('build');
+    const Webpack = require('webpack')
+    const webpackConfig = require('./webpack.config')
+    const compiler = Webpack(webpackConfig);
+    const watching = compiler.watch({
+      // watchOptions
+      aggregateTimeout: 300,
+    }, (err, stats) => {
+    });
   });
 
 program
