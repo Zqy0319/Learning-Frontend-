@@ -10,17 +10,13 @@
     <a href="https://v3.vuejs.org/" target="_blank">Vue 3 Documentation</a>
   </p>
 
-  <button @click="state.count++">count is: {{ state.count }}</button>
-  <button @click="emit('myclick')">emit</button>
-  <p>
-    Edit
-    <code>components/HelloWorld.vue</code> to test hot module replacement.
-  </p>
+  <el-button @click="state.count++">count is: {{ state.count }}</el-button>
+  <el-button @click="emit('myclick')">emit</el-button>
 </template>
 
 <script setup>
 import { defineProps, reactive, defineEmit } from 'vue';
-import comp from '../components/Comp.vue'
+import comp from 'comps/Comp.vue'
 
 defineProps({
   msg: String
@@ -29,10 +25,10 @@ defineProps({
 const emit = defineEmit(['myclick'])
 
 const state = reactive({ count: 0 })
-</script>
 
-<style scoped>
-a {
-  color: #42b983;
-}
-</style>
+fetch('/api/getUsers')
+  .then((res) => res.json())
+  .then((data) => {
+    console.log(data);
+  });
+</script>
