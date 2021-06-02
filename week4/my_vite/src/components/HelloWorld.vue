@@ -1,34 +1,29 @@
 <template>
   <h1>{{ msg }}</h1>
-  <comp></comp>
+  <p>{{ $store.state.counter }}</p>
 
-  <p>
-    <a href="https://vitejs.dev/guide/features.html" target="_blank">
-      Vite Documentation
-    </a>
-    |
-    <a href="https://v3.vuejs.org/" target="_blank">Vue 3 Documentation</a>
-  </p>
+  <p>{{ t('hello') }}</p>
 
   <el-button @click="state.count++">count is: {{ state.count }}</el-button>
-  <el-button @click="emit('myclick')">emit</el-button>
+  <p></p>
 </template>
 
 <script setup>
-import { defineProps, reactive, defineEmit } from 'vue';
-import comp from 'comps/Comp.vue'
+import { defineProps, reactive } from "vue";
+import { useI18n } from "vue-i18n";
 
 defineProps({
-  msg: String
-})
+  msg: String,
+});
 
-const emit = defineEmit(['myclick'])
-
-const state = reactive({ count: 0 })
-
-fetch('/api/getUsers')
-  .then((res) => res.json())
-  .then((data) => {
-    console.log(data);
-  });
+const state = reactive({ count: 0 });
+const { locale, t } = useI18n({
+  inheritLocale: true,
+});
 </script>
+
+<style scoped>
+a {
+  color: #42b983;
+}
+</style>

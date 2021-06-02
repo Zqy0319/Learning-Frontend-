@@ -73,21 +73,5 @@ export function useItem(isEdit, id) {
     }
   });
 
-  const updateUser = () => {
-    return request({
-      url: "/updateUser",
-      method: "post",
-      data: model.value,
-    });
-  };
-
-  const addUser = () => {
-    return request({
-      url: "/addUser",
-      method: "post",
-      data: model.value,
-    });
-  };
-
-  return { model, updateUser, addUser };
+  return { model };
 }

@@ -1,12 +1,33 @@
 <template>
   <div class="app-container">
-    <div class="btn-container">
+    <!-- <div class="btn-container"> -->
       <!-- 新增按钮 -->
-      <router-link to="/users/create">
-        <el-button type="success" icon="el-icon-edit">创建用户</el-button>
-      </router-link>
+      <!-- <el-input
+        placeholder="请输入内容"
+        v-model="input4">
+        <template #prefix>
+          <i class="el-input__icon el-icon-search"></i>
+        </template>
+      </el-input>
+      <el-button type="primary" icon="el-icon-search">搜索</el-button>
+    </div> -->
+    <div class="list">
+      <div class="searchWord">
+        <el-row>
+          <el-col :span="6">
+            <el-input v-model="searchData" style="display: inline-block"
+              placeholder="请输入搜索内容">
+              <template #prefix>
+                <i class="el-input__icon el-icon-search"></i>
+              </template>
+            </el-input>
+          </el-col>
+          <el-col :span="2">
+            <el-button type="success" @click="search">搜索</el-button>
+          </el-col>
+        </el-row>
+      </div>
     </div>
-
     <el-table
       v-loading="loading"
       :data="list"
@@ -20,21 +41,21 @@
       </el-table-column>
       <el-table-column align="center" label="年龄" prop="age">
       </el-table-column>
+      <el-table-column align="center" label="地址" prop="address"></el-table-column>
+      <el-table-column align="center" label="电话" prop="phone"></el-table-column>
       <!-- 操作列 -->
       <el-table-column label="操作" align="center">
         <template v-slot="scope">
-          <el-button
-            type="primary"
-            icon="el-icon-edit"
-            @click="handleEdit(scope)"
-            >更新</el-button
-          >
-          <el-button
-            type="danger"
-            icon="el-icon-remove"
-            @click="handleDelete(scope)"
-            >删除</el-button
-          >
+          <el-popconfirm title="确认删除这个用户吗？">
+            <template #reference>
+              <el-button
+                type="danger"
+                icon="el-icon-remove"
+                @click="handleDelete(scope)"
+                >删除</el-button
+              >
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -62,6 +83,34 @@ export default {
   components: {
     Pagination,
   },
+
+  methods: {
+    created() {
+          this.pageList()
+      },
+    pageList() {
+                // 发请求拿到数据并暂存全部数据,方便之后操作
+                this.data = listJson.list
+                this.getList()
+      },
+    // 处理数据
+    getList() {
+        // es6过滤得到满足搜索条件的展示数据list
+        let list = this.data.filter((item, index) =>
+            item.name.includes(this.searchData)
+        )
+        this.list = list.filter((item, index) =>
+            index < this.page * this.limit && index >= this.limit * (this.page - 1)
+        )
+        this.total = list.length
+    },
+    // 搜索过滤数据
+    search() {
+        this.page = 1
+        this.getList()
+    }
+  },
+
   setup() {
     // 玩家列表数据
     const router = useRouter();
